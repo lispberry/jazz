@@ -1,0 +1,27 @@
+{
+    "name": "C++ Development",
+    "dockerFile": "Dockerfile",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "twxs.cmake",
+                "GitHub.copilot",
+                "ms-vscode.cmake-tools",
+                "ms-vscode.cpptools-extension-pack",
+                "jeff-hykin.better-cpp-syntax",
+                "ms-azuretools.vscode-docker"
+            ]
+        }
+    },
+    "containerEnv": {
+        "GCC_COLORS": "error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01",
+    },
+    "mounts": [
+        "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+    ],
+    "forwardPorts": [
+        3000
+    ],
+    "postCreateCommand": "git submodule update --init --recursive"
+}

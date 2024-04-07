@@ -1,0 +1,21 @@
+function(add_strict_flags target_name)
+    if(MSVC)
+        target_compile_options(${target_name} PRIVATE /W4 /WX)
+    else()
+        target_compile_options(${target_name} PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+endfunction(add_strict_flags target_name)
+
+function(add_strict_executable target_name)
+    add_executable(${target_name} ${ARGN})
+    add_strict_flags(${target_name})
+endfunction(add_strict_executable target_name)
+
+function(add_strict_library target_name)
+    add_library(${target_name} ${ARGN})
+    add_strict_flags(${target_name})
+endfunction(add_strict_library target_name)
+
+function(add_fuzz_test target_name)
+    add_executable(${target_name} ${ARGN})
+endfunction(add_fuzz_test target_name)

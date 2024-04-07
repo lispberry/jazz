@@ -1,0 +1,69 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 22,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "Base",
+            "description": "Base of all presets",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "YES"
+            }
+        },
+        {
+            "name": "Dev",
+            "description": "Base of dev config",
+            "inherits": "Base",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "USE_ASAN": "ON",
+                "USE_UBSAN": "ON"
+            }
+        },
+        {
+            "name": "CI",
+            "description": "Base of CI config",
+            "inherits": "Base",
+            "hidden": false,
+            "generator": "Unix Makefiles",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "USE_ASAN": "ON",
+                "USE_UBSAN": "ON"
+            }
+        },
+        {
+            "name": "DevMac",
+            "description": "Dev config for Mac",
+            "inherits": "Dev",
+            "hidden": false
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "DevMac",
+            "description": "Base of dev build",
+            "configurePreset": "DevMac",
+            "jobs": 12,
+            "targets": [
+                "all"
+            ]
+        },
+        {
+            "name": "CI",
+            "description": "Base of CI build",
+            "configurePreset": "CI",
+            "jobs": 6,
+            "targets": [
+                "all"
+            ]
+        }
+    ]
+}

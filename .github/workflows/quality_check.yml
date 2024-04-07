@@ -1,0 +1,76 @@
+name: Quality Check
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  check_formatting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          submodules: true    
+
+      - name: Run clang-format on changes
+        run: |
+          git diff --name-only HEAD~1 | grep -E "\.(cpp|hpp)$" | xargs --no-run-if-empty -- clang-format --dry-run --Werror
+  
+  check_tidy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          submodules: true
+      
+      - name: Run clang-tidy on changes
+        run: |
+          git diff --name-only HEAD~1 | grep -E "\.(cpp|hpp)$" | xargs --no-run-if-empty -- clang-tidy --warnings-as-errors="*"
+        
+  check_compilation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name : Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          submodules: true
+
+      - name: Configure project
+        run: |
+          cmake --preset CI
+
+      - name: Build project
+        run: |
+          cmake --build --preset CI
+
+  check_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name : Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          submodules: true
+
+      - name: Configure project
+        run: |
+          cmake --preset CI
+
+      - name: Build project
+        run: |
+          cmake --build --preset CI
+
+      - name: Run tests
+        run: |
+          cd build
+          ASAN_OPTIONS=detect_leaks=1 ctest --output-on-failure
