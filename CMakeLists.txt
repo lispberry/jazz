@@ -14,6 +14,7 @@ include(cmake/GTest.cmake)
 include(cmake/CustomTargets.cmake)
 
 add_subdirectory(3party/fmt)
+add_subdirectory(3party/tl)
 
 add_subdirectory(lib)
 add_subdirectory(cmd)
