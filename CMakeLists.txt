@@ -13,6 +13,8 @@ include(cmake/Sanitizers.cmake)
 include(cmake/GTest.cmake)
 include(cmake/CustomTargets.cmake)
 
+find_package(SDL2 REQUIRED)
+
 add_subdirectory(3party/fmt)
 add_subdirectory(3party/tl)
 add_subdirectory(3party/json)
