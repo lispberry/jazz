@@ -1,17 +1,14 @@
 Checks: >
-  -*,
-  -cert-err58-cpp,
-  -cppcoreguidelines-avoid-non-const-global-variables,
-  readability-*,
-  -readability-identifier-length,
-  bugprone-*,
-  clang-analyzer-*,
-  clang-diagnostic-*,
-  concurrency-*,
-  cppcoreguidelines-*,
-  modernize-*,
-  performance-*,
-  portability-*
-CheckOptions:
-  - key:             readability-identifier-naming.FunctionIgnoredRegexp
-    value:           "LLVMFuzzerTestOneInput"
+    -*,
+    -cert-err58-cpp,
+    -cppcoreguidelines-avoid-non-const-global-variables,
+    readability-*,
+    -readability-identifier-length,
+    bugprone-*,
+    clang-analyzer-*,
+    clang-diagnostic-*,
+    concurrency-*,
+    cppcoreguidelines-*,
+    modernize-*,
+    performance-*,
+    portability-*

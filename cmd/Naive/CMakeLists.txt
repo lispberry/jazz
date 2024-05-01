@@ -13,6 +13,7 @@ find_package(SDL2 REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     json
     fmt::fmt tl
+    TypeTraits
     SDL2::SDL2 SDL2::SDL2main)
 # Copy all assets to the build directory
 file(COPY Asset DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
