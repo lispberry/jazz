@@ -32,7 +32,7 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char** argv) -> int
         return -1;
     }
 
-    auto scene = LoadScene("Asset/scene.json");
+    const auto scene = LoadScene("Asset/scene.json");
     if (!scene.has_value()) {
         fmt::print("Failed to load scene: {}\n", static_cast<int>(scene.error()));
         return 1;
