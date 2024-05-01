@@ -16,6 +16,7 @@ include(cmake/CustomTargets.cmake)
 add_subdirectory(3party/fmt)
 add_subdirectory(3party/tl)
 add_subdirectory(3party/json)
+add_subdirectory(3party/imgui-1.90.5)
 
 add_subdirectory(lib)
 add_subdirectory(cmd)
