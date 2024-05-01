@@ -23,13 +23,12 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char** argv) -> int
     }
 
     // SDL Create windows and surface
-    SDL_Window* window
-        = SDL_CreateWindow(windowName,
-            SDL_WINDOWPOS_CENTERED,
-            SDL_WINDOWPOS_CENTERED,
-            width,
-            height,
-            SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    SDL_Window* window = SDL_CreateWindow(windowName,
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        width,
+        height,
+        SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (window == nullptr) {
         fmt::print("Failed to create window: {}\n", SDL_GetError());
         return 1;
@@ -63,7 +62,7 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char** argv) -> int
     }
 
     // SDL Event loop
-    SDL_Event event;
+    SDL_Event event {};
     for (;;) {
         while (SDL_PollEvent(&event) != 0) {
             ImGui_ImplSDL2_ProcessEvent(&event);
