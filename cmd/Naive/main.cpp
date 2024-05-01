@@ -1,6 +1,9 @@
 #include <Entity/Scene.hpp>
 #include <SDL.h>
+#include <backends/imgui_impl_sdl2.h>
+#include <backends/imgui_impl_sdlrenderer2.h>
 #include <fmt/core.h>
+#include <imgui.h>
 #include <span>
 
 [[nodiscard]] auto add(int64_t x, int64_t y) -> decltype(x + y)
@@ -13,6 +16,11 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char** argv) -> int
     constexpr auto windowName = "Naive";
     constexpr auto width = 1280;
     constexpr auto height = 720;
+
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0) {
+        fmt::print("Couldn't initialize a window: {}\n", SDL_GetError());
+        return 1;
+    }
 
     // SDL Create windows and surface
     SDL_Window* window
@@ -29,7 +37,23 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char** argv) -> int
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == nullptr) {
         fmt::print("Could not create a renderer: {}", SDL_GetError());
-        return -1;
+        return 1;
+    }
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; // Enable Gamepad Controls
+
+    ImGui::StyleColorsLight();
+    if (const auto res = ImGui_ImplSDL2_InitForSDLRenderer(window, renderer); !res) {
+        fmt::print("Failed to initialize ImGui SDL2\n");
+        return 1;
+    }
+    if (const auto res = ImGui_ImplSDLRenderer2_Init(renderer); !res) {
+        fmt::print("Failed to initialize ImGui SDL2 Renderer\n");
+        return 1;
     }
 
     const auto scene = LoadScene("Asset/scene.json");
@@ -42,6 +66,7 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char** argv) -> int
     SDL_Event event;
     for (;;) {
         while (SDL_PollEvent(&event) != 0) {
+            ImGui_ImplSDL2_ProcessEvent(&event);
             if (event.type == SDL_QUIT) {
                 SDL_DestroyRenderer(renderer);
                 SDL_DestroyWindow(window);
@@ -50,6 +75,13 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char** argv) -> int
             }
         }
 
+        ImGui_ImplSDLRenderer2_NewFrame();
+        ImGui_ImplSDL2_NewFrame();
+        ImGui::NewFrame();
+
+        ImGui::ShowDemoWindow();
+        ImGui::Render();
+
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
@@ -57,6 +89,7 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char** argv) -> int
             entity->Update(0.016);
             entity->Draw(renderer);
         }
+        ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
         SDL_RenderPresent(renderer);
         SDL_Delay(16);
     }

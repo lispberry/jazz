@@ -9,10 +9,10 @@ add_strict_executable(${PROJECT_NAME}
     Entity/Square.hpp)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
-find_package(SDL2 REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     json
     fmt::fmt tl
+    ImGui
     TypeTraits
     SDL2::SDL2 SDL2::SDL2main)
 # Copy all assets to the build directory
