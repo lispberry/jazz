@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.12)
 
 project(cpp_template)
 
@@ -14,6 +14,8 @@ include(cmake/GTest.cmake)
 include(cmake/CustomTargets.cmake)
 
 add_subdirectory(3party/fmt)
+add_subdirectory(3party/tl)
+add_subdirectory(3party/json)
 
 add_subdirectory(lib)
 add_subdirectory(cmd)
